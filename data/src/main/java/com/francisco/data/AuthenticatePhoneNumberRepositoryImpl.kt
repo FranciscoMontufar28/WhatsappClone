@@ -1,9 +1,9 @@
 package com.francisco.data
 
 import android.app.Activity
-import com.francisco.domainx.AuthenticatePhoneNumberRepository
-import com.francisco.domainx.OnCompleteFireBaseListener
-import com.francisco.domainx.OnVerificationFireBaseStateChanged
+import com.francisco.domain.AuthenticatePhoneNumberRepository
+import com.francisco.domain.OnCompleteFireBaseListener
+import com.francisco.domain.OnVerificationFireBaseStateChanged
 import javax.inject.Inject
 
 class AuthenticatePhoneNumberRepositoryImpl @Inject constructor(var fireBaseAuthenticationDataSource: FireBaseAuthenticationDataSource) :

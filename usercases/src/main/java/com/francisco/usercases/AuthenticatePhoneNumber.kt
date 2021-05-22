@@ -1,8 +1,8 @@
 package com.francisco.usercases
 
 import android.app.Activity
-import com.francisco.domainx.AuthenticatePhoneNumberRepository
-import com.francisco.domainx.OnVerificationFireBaseStateChanged
+import com.francisco.domain.AuthenticatePhoneNumberRepository
+import com.francisco.domain.OnVerificationFireBaseStateChanged
 import javax.inject.Inject
 
 class AuthenticatePhoneNumber @Inject constructor(var repository: AuthenticatePhoneNumberRepository) {

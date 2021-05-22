@@ -2,8 +2,8 @@ package com.francisco.framework
 
 import android.app.Activity
 import com.francisco.data.FireBaseAuthenticationDataSource
-import com.francisco.domainx.OnCompleteFireBaseListener
-import com.francisco.domainx.OnVerificationFireBaseStateChanged
+import com.francisco.domain.OnCompleteFireBaseListener
+import com.francisco.domain.OnVerificationFireBaseStateChanged
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider

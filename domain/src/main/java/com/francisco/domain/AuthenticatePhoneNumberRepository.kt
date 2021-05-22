@@ -1,4 +1,4 @@
-package com.francisco.domainx
+package com.francisco.domain
 
 import android.app.Activity
 

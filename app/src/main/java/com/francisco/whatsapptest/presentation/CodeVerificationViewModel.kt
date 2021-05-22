@@ -4,8 +4,8 @@ import android.app.Activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.francisco.domainx.OnCompleteFireBaseListener
-import com.francisco.domainx.OnVerificationFireBaseStateChanged
+import com.francisco.domain.OnCompleteFireBaseListener
+import com.francisco.domain.OnVerificationFireBaseStateChanged
 import com.francisco.usercases.AuthenticationUserCases
 import com.francisco.whatsapptest.util.Event
 import javax.inject.Inject

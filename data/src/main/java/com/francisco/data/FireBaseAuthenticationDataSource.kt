@@ -1,8 +1,8 @@
 package com.francisco.data
 
 import android.app.Activity
-import com.francisco.domainx.OnCompleteFireBaseListener
-import com.francisco.domainx.OnVerificationFireBaseStateChanged
+import com.francisco.domain.OnCompleteFireBaseListener
+import com.francisco.domain.OnVerificationFireBaseStateChanged
 
 interface FireBaseAuthenticationDataSource {
     fun validateUserByPhone(

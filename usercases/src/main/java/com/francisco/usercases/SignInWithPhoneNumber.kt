@@ -1,7 +1,7 @@
 package com.francisco.usercases
 
-import com.francisco.domainx.AuthenticatePhoneNumberRepository
-import com.francisco.domainx.OnCompleteFireBaseListener
+import com.francisco.domain.AuthenticatePhoneNumberRepository
+import com.francisco.domain.OnCompleteFireBaseListener
 import javax.inject.Inject
 
 class SignInWithPhoneNumber @Inject constructor(var repository: AuthenticatePhoneNumberRepository) {

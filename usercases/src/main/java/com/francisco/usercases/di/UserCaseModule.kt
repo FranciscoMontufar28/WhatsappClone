@@ -1,6 +1,6 @@
 package com.francisco.usercases.di
 
-import com.francisco.domainx.AuthenticatePhoneNumberRepository
+import com.francisco.domain.AuthenticatePhoneNumberRepository
 import com.francisco.usercases.AuthenticatePhoneNumber
 import com.francisco.usercases.AuthenticationUserCases
 import com.francisco.usercases.SignInWithPhoneNumber
