@@ -1,0 +1,6 @@
+include ':domain'
+include ':data'
+include ':usercases'
+include ':framework:firebasemanager'
+include ':app'
+rootProject.name = "WhatsappClone"
