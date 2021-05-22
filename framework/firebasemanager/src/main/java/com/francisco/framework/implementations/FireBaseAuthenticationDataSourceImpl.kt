@@ -4,6 +4,7 @@ import android.app.Activity
 import com.francisco.data.FireBaseAuthenticationDataSource
 import com.francisco.domain.OnCompleteFireBaseListener
 import com.francisco.domain.OnVerificationFireBaseStateChanged
+import com.francisco.framework.providers.AuthProvider
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
@@ -53,5 +54,9 @@ class FireBaseAuthenticationDataSourceImpl @Inject constructor(
             val isSuccess = it.isSuccessful
             onCompleteFireBaseListener.onCompleteListener(isSuccess)
         }
+    }
+
+    override fun getCurrentUser(): String? {
+        return authProvider.getCurrentUser()
     }
 }
