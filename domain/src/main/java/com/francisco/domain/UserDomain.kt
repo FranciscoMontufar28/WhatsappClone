@@ -1,4 +1,8 @@
 package com.francisco.domain
 
-class UserDomain {
-}
+data class UserDomain(
+    val id: String,
+    val nickname: String? = null,
+    val phone: String? = null,
+    val image: String? = null
+)

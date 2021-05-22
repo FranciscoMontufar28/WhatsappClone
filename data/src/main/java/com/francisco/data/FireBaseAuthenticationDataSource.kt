@@ -16,4 +16,6 @@ interface FireBaseAuthenticationDataSource {
         verificationId: String,
         onCompleteFireBaseListener: OnCompleteFireBaseListener
     )
+
+    fun getCurrentUser(): String?
 }

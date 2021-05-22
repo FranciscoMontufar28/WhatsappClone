@@ -1,4 +1,4 @@
-package com.francisco.framework
+package com.francisco.framework.providers
 
 import android.app.Activity
 import com.francisco.framework.requestparameters.FireBaseAuthenticationParameters
@@ -8,7 +8,7 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 
-abstract class BaseRequest(var parametersFire: FireBaseAuthenticationParameters) {
+abstract class AuthBaseRequest(var parametersFire: FireBaseAuthenticationParameters) {
     fun sendCodeVerification(
         phoneNumber: String,
         activity: Activity,
@@ -33,7 +33,15 @@ abstract class BaseRequest(var parametersFire: FireBaseAuthenticationParameters)
         val credential: PhoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, code)
         return parametersFire.firebaseAuth.signInWithCredential(credential)
     }
+
+    fun getCurrentUser(): String? {
+        return if (parametersFire.firebaseAuth.currentUser != null) {
+            parametersFire.firebaseAuth.currentUser.uid
+        } else {
+            null
+        }
+    }
 }
 
 class AuthProvider(fireBaseAuthenticationParameters: FireBaseAuthenticationParameters) :
-    BaseRequest(fireBaseAuthenticationParameters)
+    AuthBaseRequest(fireBaseAuthenticationParameters)

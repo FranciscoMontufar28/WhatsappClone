@@ -5,17 +5,27 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.francisco.domain.OnCompleteFireBaseListener
+import com.francisco.domain.OnFireStoreCloudListener
 import com.francisco.domain.OnVerificationFireBaseStateChanged
+import com.francisco.domain.UserDomain
 import com.francisco.usercases.AuthenticationUserCases
+import com.francisco.usercases.FireStoreCloudUserCases
 import com.francisco.whatsapptest.util.Event
+import com.francisco.whatsapptest.util.SuccessCode
+import java.lang.Exception
 import javax.inject.Inject
 
-class CodeVerificationViewModel @Inject constructor(val userCases: AuthenticationUserCases) :
+class CodeVerificationViewModel @Inject constructor(
+    val authenticationUserCases: AuthenticationUserCases,
+    val fireStoreCloudUserCases: FireStoreCloudUserCases
+) :
     ViewModel() {
     lateinit var mVerificationId: String
 
     sealed class CodeVerificationNavigation {
-        data class VerificationSuccess(val code: String) : CodeVerificationNavigation()
+        data class VerificationSuccess(val type: SuccessCode, val code: String = "") :
+            CodeVerificationNavigation()
+
         data class VerificationError(val error: String) : CodeVerificationNavigation()
         object HideLoading : CodeVerificationNavigation()
         object ShowLoading : CodeVerificationNavigation()
@@ -27,12 +37,13 @@ class CodeVerificationViewModel @Inject constructor(val userCases: Authenticatio
     val event: LiveData<Event<CodeVerificationNavigation>> get() = _event
 
     fun authenticateUserByPhoneNumber(phoneNumber: String, activity: Activity) {
-        userCases.authenticatePhoneNumber.invoke(
+        authenticationUserCases.authenticatePhoneNumber.invoke(
             phoneNumber,
             activity,
             object : OnVerificationFireBaseStateChanged {
                 override fun onVerificationCompleted(code: String?) {
                     code?.let { signInWithVerificationCode(it) }
+
                 }
 
                 override fun onVerificationFailed(errorCode: String?) {
@@ -50,20 +61,49 @@ class CodeVerificationViewModel @Inject constructor(val userCases: Authenticatio
 
     fun signInWithVerificationCode(code: String) {
         _event.value = Event(CodeVerificationNavigation.ShowLoading)
-        userCases.signInWithPhoneNumber.invoke(
+        authenticationUserCases.signInWithPhoneNumber.invoke(
             code,
             mVerificationId,
             object : OnCompleteFireBaseListener {
                 override fun onCompleteListener(isCompleted: Boolean) {
-                    _event.value = Event(CodeVerificationNavigation.HideLoading)
                     if (isCompleted) {
-                        _event.value = Event(CodeVerificationNavigation.VerificationSuccess(code))
+                        _event.value =
+                            Event(
+                                CodeVerificationNavigation.VerificationSuccess(
+                                    SuccessCode.AUTHENTICATEUSER,
+                                    code
+                                )
+                            )
                     } else {
                         _event.value =
                             Event(CodeVerificationNavigation.VerificationError("The code doesn't match"))
                     }
                 }
-
             })
+    }
+
+    fun saveAuthCurrentUser(phoneNumber: String) {
+        getAuthCurrentUser()?.let { id ->
+            val userDomain = UserDomain(id = id, phone = phoneNumber)
+            fireStoreCloudUserCases.saveAuthCurrentUser.invoke(
+                userDomain, object : OnFireStoreCloudListener {
+                    override fun addOnSuccessListener() {
+                        _event.value = Event(CodeVerificationNavigation.HideLoading)
+                        _event.value =
+                            Event(CodeVerificationNavigation.VerificationSuccess(SuccessCode.SAVEDUSER))
+                    }
+
+                    override fun addOnFailureListener(exception: Exception) {
+                        _event.value = Event(CodeVerificationNavigation.HideLoading)
+                        _event.value =
+                            Event(CodeVerificationNavigation.VerificationError("The is an error saving the user information"))
+                    }
+                }
+            )
+        }
+    }
+
+    private fun getAuthCurrentUser(): String? {
+        return authenticationUserCases.getAuthCurrentUser.invoke()
     }
 }

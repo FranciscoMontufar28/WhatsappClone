@@ -1,4 +1,12 @@
 package com.francisco.usercases
 
-class UpdateAuthCurrentUser {
+import com.francisco.domain.FireStoreRepository
+import com.francisco.domain.OnFireStoreCloudListener
+import com.francisco.domain.UserDomain
+import javax.inject.Inject
+
+class UpdateAuthCurrentUser @Inject constructor(val repository: FireStoreRepository) {
+    fun invoke(user: UserDomain, onFireStoreCloudListener: OnFireStoreCloudListener) {
+        repository.updateAuthUser(user, onFireStoreCloudListener)
+    }
 }

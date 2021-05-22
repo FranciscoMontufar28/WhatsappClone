@@ -22,5 +22,13 @@
         <argument
             android:name="phoneNumber"
             app:argType="string" />
+        <action
+            android:id="@+id/action_codeVerificationFragment_to_completeInformationFragment"
+            app:destination="@id/completeInformationFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/completeInformationFragment"
+        android:name="com.francisco.whatsapptest.ui.CompleteInformationFragment"
+        android:label="fragment_complete_information"
+        tools:layout="@layout/fragment_complete_information" />
 </navigation>

@@ -6,14 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.NavHostFragment
 import com.francisco.whatsapptest.MainActivity
+import com.francisco.whatsapptest.R
 import com.francisco.whatsapptest.WhatsApp
 import com.francisco.whatsapptest.databinding.FragmentCodeVerificationBinding
 import com.francisco.whatsapptest.di.CodeVerificationComponent
 import com.francisco.whatsapptest.di.CodeVerificationModule
 import com.francisco.whatsapptest.presentation.CodeVerificationViewModel
 import com.francisco.whatsapptest.util.Event
+import com.francisco.whatsapptest.util.SuccessCode
 import com.francisco.whatsapptest.util.getViewModel
 import com.francisco.whatsapptest.util.hideKeyboard
 
@@ -59,14 +63,6 @@ class CodeVerificationFragment : Fragment() {
         observeProducts()
     }
 
-    private fun actionButtonValidation() {
-        binding.btValidateCode.setOnClickListener {
-            val code = binding.etCodeVerification.text.toString()
-            codeVerificationViewModel.signInWithVerificationCode(code)
-            it.hideKeyboard()
-        }
-    }
-
     private fun observeProducts() {
         codeVerificationViewModel.event.observe(viewLifecycleOwner, Observer(::onEventListener))
     }
@@ -75,7 +71,13 @@ class CodeVerificationFragment : Fragment() {
         event.getContentIfNotHandled()?.let { navigation ->
             when (navigation) {
                 is CodeVerificationViewModel.CodeVerificationNavigation.VerificationSuccess -> navigation.run {
-                    displayCodeVerification(this.code)
+                    when (this.type) {
+                        SuccessCode.AUTHENTICATEUSER -> {
+                            displayCodeVerification(this.code)
+                            saveAuthUser(mExtraPhone)
+                        }
+                        SuccessCode.SAVEDUSER -> toGoCompleteInformationFragment()
+                    }
                 }
                 is CodeVerificationViewModel.CodeVerificationNavigation.VerificationError -> navigation.run {
                     errorMessage(this.error)
@@ -84,6 +86,24 @@ class CodeVerificationFragment : Fragment() {
                 is CodeVerificationViewModel.CodeVerificationNavigation.HideLoading -> hideLoader()
             }
         }
+    }
+
+    private fun actionButtonValidation() {
+        binding.btValidateCode.setOnClickListener {
+            val code = binding.etCodeVerification.text.toString()
+            codeVerificationViewModel.signInWithVerificationCode(code)
+            it.hideKeyboard()
+        }
+    }
+
+    private fun toGoCompleteInformationFragment() {
+        val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        navController.navigate(R.id.completeInformationFragment)
+    }
+
+    private fun saveAuthUser(mExtraPhone: String?) {
+        mExtraPhone?.let { codeVerificationViewModel.saveAuthCurrentUser(it) }
     }
 
     private fun displayCodeVerification(code: String) {
@@ -105,5 +125,4 @@ class CodeVerificationFragment : Fragment() {
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
-
 }

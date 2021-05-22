@@ -1,4 +1,6 @@
 package com.francisco.usercases
 
-class FireStoreCloudUserCases {
-}
+data class FireStoreCloudUserCases(
+    var saveAuthCurrentUser: SaveAuthCurrentUser,
+    var updateAuthCurrentUser: UpdateAuthCurrentUser
+)

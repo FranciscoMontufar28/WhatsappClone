@@ -32,4 +32,8 @@ class AuthenticatePhoneNumberRepositoryImpl @Inject constructor(var fireBaseAuth
             onCompleteFireBaseListener
         )
     }
+
+    override fun getAuthCurrentUser(): String? {
+        return fireBaseAuthenticationDataSource.getCurrentUser()
+    }
 }

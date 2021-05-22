@@ -1,9 +1,8 @@
 package com.francisco.usercases.di
 
 import com.francisco.domain.AuthenticatePhoneNumberRepository
-import com.francisco.usercases.AuthenticatePhoneNumber
-import com.francisco.usercases.AuthenticationUserCases
-import com.francisco.usercases.SignInWithPhoneNumber
+import com.francisco.domain.FireStoreRepository
+import com.francisco.usercases.*
 import dagger.Module
 import dagger.Provides
 
@@ -18,6 +17,20 @@ class UserCaseModule {
             ),
             SignInWithPhoneNumber(
                 repository
+            ),
+            GetAuthCurrentUser(
+                repository
+            )
+        )
+
+    @Provides
+    fun provideFireStoreCloudUserCases(fireStoreRepository: FireStoreRepository) =
+        FireStoreCloudUserCases(
+            SaveAuthCurrentUser(
+                fireStoreRepository
+            ),
+            UpdateAuthCurrentUser(
+                fireStoreRepository
             )
         )
 }

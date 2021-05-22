@@ -1,10 +1,16 @@
 package com.francisco.framework.di
 
 import com.francisco.data.FireBaseAuthenticationDataSource
-import com.francisco.framework.AuthProvider
-import com.francisco.framework.BaseRequestParameters
-import com.francisco.framework.FireBaseAuthenticationDataSourceImpl
+import com.francisco.data.FireStoreCloudDataSource
+import com.francisco.framework.providers.AuthProvider
+import com.francisco.framework.requestparameters.FireBaseAuthenticationParameters
+import com.francisco.framework.implementations.FireBaseAuthenticationDataSourceImpl
+import com.francisco.framework.implementations.FireStoreCloudDataSourceImpl
+import com.francisco.framework.providers.UserProvider
+import com.francisco.framework.requestparameters.FireStoreCloudParameters
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import java.util.concurrent.TimeUnit
@@ -34,19 +40,47 @@ class FireBaseModule {
         @Named("timeStamp") timeStamp: Long,
         @Named("timeUnit") timeUnit: TimeUnit,
         @Named("firebaseAuth") firebaseAuth: FirebaseAuth
-    ) = BaseRequestParameters(
-        timeStamp,
-        timeUnit,
-        firebaseAuth
+    ) =
+        FireBaseAuthenticationParameters(
+            timeStamp,
+            timeUnit,
+            firebaseAuth
+        )
+
+    @Provides
+    @Singleton
+    @Named("fireStoreCloud")
+    fun provideFireStoreCloud() = FirebaseFirestore.getInstance().collection("Users")
+
+
+    @Provides
+    fun provideFireStoreCloudParameters(
+        @Named("fireStoreCloud") collection: CollectionReference
+    ) = FireStoreCloudParameters(
+        collection
     )
 
     @Provides
-    fun provideAuthProvider(baseRequestParameters: BaseRequestParameters) =
-        AuthProvider(baseRequestParameters)
+    fun provideAuthProvider(fireBaseAuthenticationParameters: FireBaseAuthenticationParameters) =
+        AuthProvider(
+            fireBaseAuthenticationParameters
+        )
+
+    @Provides
+    fun provideUserProvider(fireStoreCloudParameters: FireStoreCloudParameters) =
+        UserProvider(
+            fireStoreCloudParameters
+        )
 
     @Provides
     fun provideFireBaseAuthenticationDataSource(
         authProvider: AuthProvider
     ): FireBaseAuthenticationDataSource =
-        FireBaseAuthenticationDataSourceImpl(authProvider)
+        FireBaseAuthenticationDataSourceImpl(
+            authProvider
+        )
+
+    @Provides
+    fun provideFireStoreCloudDataSource(userProvider: UserProvider): FireStoreCloudDataSource =
+        FireStoreCloudDataSourceImpl(userProvider)
 }

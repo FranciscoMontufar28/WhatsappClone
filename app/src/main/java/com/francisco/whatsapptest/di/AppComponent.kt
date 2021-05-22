@@ -18,6 +18,7 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun inject(module: CodeVerificationModule): CodeVerificationComponent
+    fun inject(module: CompleteInformationModule): CompleteInformationComponent
 
     @Component.Factory
     interface Factory {

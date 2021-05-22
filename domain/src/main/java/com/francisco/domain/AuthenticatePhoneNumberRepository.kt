@@ -14,4 +14,6 @@ interface AuthenticatePhoneNumberRepository {
         verificationId: String,
         onCompleteFireBaseListener: OnCompleteFireBaseListener
     )
+
+    fun getAuthCurrentUser(): String?
 }

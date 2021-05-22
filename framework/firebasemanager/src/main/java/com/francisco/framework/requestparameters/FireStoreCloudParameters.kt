@@ -1,4 +1,7 @@
 package com.francisco.framework.requestparameters
 
-class FireStoreCloudParameters {
-}
+import com.google.firebase.firestore.CollectionReference
+
+data class FireStoreCloudParameters(
+    val collection: CollectionReference
+)
