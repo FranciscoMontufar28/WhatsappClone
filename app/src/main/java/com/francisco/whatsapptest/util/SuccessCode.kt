@@ -4,3 +4,8 @@ enum class SuccessCode {
     AUTHENTICATEUSER,
     SAVEDUSER
 }
+
+enum class ImageCode {
+    SAVEDIMAGE,
+    IMAGEURL
+}

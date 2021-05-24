@@ -1,16 +1,24 @@
 package com.francisco.framework.di
 
 import com.francisco.data.FireBaseAuthenticationDataSource
+import com.francisco.data.FireBaseStorageDataSource
 import com.francisco.data.FireStoreCloudDataSource
 import com.francisco.framework.providers.AuthProvider
 import com.francisco.framework.requestparameters.FireBaseAuthenticationParameters
 import com.francisco.framework.implementations.FireBaseAuthenticationDataSourceImpl
+import com.francisco.framework.implementations.FireBaseStorageDataSourceImpl
 import com.francisco.framework.implementations.FireStoreCloudDataSourceImpl
+import com.francisco.framework.providers.ImageProvider
 import com.francisco.framework.providers.UserProvider
+import com.francisco.framework.requestparameters.FireStorageParameters
 import com.francisco.framework.requestparameters.FireStoreCloudParameters
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import dagger.Module
 import dagger.Provides
 import java.util.concurrent.TimeUnit
@@ -83,4 +91,24 @@ class FireBaseModule {
     @Provides
     fun provideFireStoreCloudDataSource(userProvider: UserProvider): FireStoreCloudDataSource =
         FireStoreCloudDataSourceImpl(userProvider)
+
+    /*@Provides
+    @Singleton
+    @Named("firebaseStorage")
+    fun provideStorageReference() = Firebase.storage*/
+
+    @Provides
+    fun provideFireStorageParameters(
+        //@Named("firebaseStorage") firebaseStorage: FirebaseStorage
+    ) = FireStorageParameters(
+        //firebaseStorage
+    )
+
+    @Provides
+    fun provideImageProvider(fireStorageParameters: FireStorageParameters) =
+        ImageProvider(fireStorageParameters)
+
+    @Provides
+    fun provideFireBaseStorageDataSource(imageProvider: ImageProvider): FireBaseStorageDataSource =
+        FireBaseStorageDataSourceImpl(imageProvider)
 }

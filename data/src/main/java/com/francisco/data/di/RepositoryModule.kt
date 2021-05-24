@@ -1,10 +1,8 @@
 package com.francisco.data.di
 
-import com.francisco.data.AuthenticatePhoneNumberRepositoryImpl
-import com.francisco.data.FireBaseAuthenticationDataSource
-import com.francisco.data.FireStoreCloudDataSource
-import com.francisco.data.FireStoreRepositoryImpl
+import com.francisco.data.*
 import com.francisco.domain.AuthenticatePhoneNumberRepository
+import com.francisco.domain.FireBaseStorageRepository
 import com.francisco.domain.FireStoreRepository
 import dagger.Module
 import dagger.Provides
@@ -22,4 +20,9 @@ class RepositoryModule {
     fun provideFireStoreRepository(
         fireStoreCloudDataSource: FireStoreCloudDataSource
     ): FireStoreRepository = FireStoreRepositoryImpl(fireStoreCloudDataSource)
+
+    @Provides
+    fun provideFireBaseStorageRepository(
+        fireBaseStorageDataSource: FireBaseStorageDataSource
+    ): FireBaseStorageRepository = FireBaseStorageRepositoryImpl(fireBaseStorageDataSource)
 }

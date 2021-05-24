@@ -17,6 +17,7 @@ import com.francisco.whatsapptest.di.CompleteInformationComponent
 import com.francisco.whatsapptest.di.CompleteInformationModule
 import com.francisco.whatsapptest.presentation.CompleteInformationViewModel
 import com.francisco.whatsapptest.util.Event
+import com.francisco.whatsapptest.util.ImageCode
 import com.francisco.whatsapptest.util.getViewModel
 import com.fxn.pix.Options
 import com.fxn.pix.Pix
@@ -33,7 +34,7 @@ class CompleteInformationFragment : Fragment() {
     }
     private val mReturnValues = arrayListOf<String>()
     lateinit var mOptions: Options
-    lateinit var mImageFile: File
+    var mImageFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +79,16 @@ class CompleteInformationFragment : Fragment() {
                 }
                 is CompleteInformationViewModel.CompleteInformationNavigation.ShowLoading -> showLoading()
                 is CompleteInformationViewModel.CompleteInformationNavigation.HideLoading -> hideLoader()
+                is CompleteInformationViewModel.CompleteInformationNavigation.ImageSavedState -> navigation.run {
+                    when (this.imageCode) {
+                        ImageCode.SAVEDIMAGE -> {
+                            onSavedImage()
+                        }
+                        ImageCode.IMAGEURL -> {
+                            onUrlSaved(this.data!!)
+                        }
+                    }
+                }
             }
         }
     }
@@ -93,7 +104,13 @@ class CompleteInformationFragment : Fragment() {
                 val returnValue = it.getStringArrayListExtra(Pix.IMAGE_RESULTS)
                 returnValue?.let { value ->
                     mImageFile = File(value[0])
-                    binding.ivCompleteInformation.setImageBitmap(BitmapFactory.decodeFile(mImageFile.absolutePath))
+                    mImageFile?.let { resultFile ->
+                        binding.ivCompleteInformation.setImageBitmap(
+                            BitmapFactory.decodeFile(
+                                resultFile.absolutePath
+                            )
+                        )
+                    }
                 }
             }
         }
@@ -134,16 +151,29 @@ class CompleteInformationFragment : Fragment() {
             .setSpanCount(4)
             .setMode(Options.Mode.Picture)
             .setVideoDurationLimitinSeconds(0)
-            .setScreenOrientation(Options.SCREEN_ORIENTATION_LANDSCAPE)
+            .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)
             .setPath("/pix/images")
     }
 
 
     private fun onSaveActionButton() {
         binding.btCompleteInformation.setOnClickListener {
-            val username = binding.etCompleteUsername.text.toString()
-            updateAuthUser(username, null)
+            if (mImageFile != null) {
+                completeInformationViewModel.saveImageInCloudStore(requireContext(), mImageFile!!)
+            } else {
+                val username = binding.etCompleteUsername.text.toString()
+                updateAuthUser(username, null)
+            }
         }
+    }
+
+    private fun onSavedImage() {
+        completeInformationViewModel.getImageUrl()
+    }
+
+    private fun onUrlSaved(url: String) {
+        val username = binding.etCompleteUsername.text.toString()
+        updateAuthUser(username, url)
     }
 
     private fun updateAuthUser(userName: String, image: String?) {

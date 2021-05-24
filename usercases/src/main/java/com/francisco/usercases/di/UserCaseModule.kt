@@ -1,6 +1,7 @@
 package com.francisco.usercases.di
 
 import com.francisco.domain.AuthenticatePhoneNumberRepository
+import com.francisco.domain.FireBaseStorageRepository
 import com.francisco.domain.FireStoreRepository
 import com.francisco.usercases.*
 import dagger.Module
@@ -31,6 +32,17 @@ class UserCaseModule {
             ),
             UpdateAuthCurrentUser(
                 fireStoreRepository
+            )
+        )
+
+    @Provides
+    fun provideFireBaseStorageUserCases(fireBaseStorageRepository: FireBaseStorageRepository) =
+        FireBaseStorageUserCases(
+            SaveImageInCloudStore(
+                fireBaseStorageRepository
+            ),
+            GetImageUrl(
+                fireBaseStorageRepository
             )
         )
 }
