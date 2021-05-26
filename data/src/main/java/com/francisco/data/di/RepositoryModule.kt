@@ -4,6 +4,7 @@ import com.francisco.data.*
 import com.francisco.domain.AuthenticatePhoneNumberRepository
 import com.francisco.domain.FireBaseStorageRepository
 import com.francisco.domain.FireStoreRepository
+import com.francisco.domain.SharedPreferencesRepository
 import dagger.Module
 import dagger.Provides
 
@@ -25,4 +26,8 @@ class RepositoryModule {
     fun provideFireBaseStorageRepository(
         fireBaseStorageDataSource: FireBaseStorageDataSource
     ): FireBaseStorageRepository = FireBaseStorageRepositoryImpl(fireBaseStorageDataSource)
+
+    @Provides
+    fun provideSharedPreferencesRepository(appPreferencesHelper: AppPreferencesHelper): SharedPreferencesRepository =
+        SharedPreferencesRepositoryImpl(appPreferencesHelper)
 }

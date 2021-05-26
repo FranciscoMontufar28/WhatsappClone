@@ -13,6 +13,11 @@
         <action
             android:id="@+id/action_onBoardingFragment_to_codeVerificationFragment"
             app:destination="@id/codeVerificationFragment" />
+        <action
+            android:id="@+id/action_onBoardingFragment_to_mainChatFragment"
+            app:destination="@id/mainChatFragment"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/codeVerificationFragment"
@@ -30,5 +35,16 @@
         android:id="@+id/completeInformationFragment"
         android:name="com.francisco.whatsapptest.ui.CompleteInformationFragment"
         android:label="fragment_complete_information"
-        tools:layout="@layout/fragment_complete_information" />
+        tools:layout="@layout/fragment_complete_information" >
+        <action
+            android:id="@+id/action_completeInformationFragment_to_mainChatFragment"
+            app:destination="@id/mainChatFragment"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainChatFragment"
+        android:name="com.francisco.whatsapptest.ui.MainChatFragment"
+        android:label="fragment_main_chat"
+        tools:layout="@layout/fragment_main_chat" />
 </navigation>

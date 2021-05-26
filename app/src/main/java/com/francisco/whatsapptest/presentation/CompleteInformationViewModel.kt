@@ -11,6 +11,7 @@ import com.francisco.domain.UserDomain
 import com.francisco.usercases.AuthenticationUserCases
 import com.francisco.usercases.FireBaseStorageUserCases
 import com.francisco.usercases.FireStoreCloudUserCases
+import com.francisco.usercases.SharedPreferencesUserCases
 import com.francisco.whatsapptest.util.Event
 import com.francisco.whatsapptest.util.ImageCode
 import kotlinx.coroutines.launch
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class CompleteInformationViewModel @Inject constructor(
     val authenticationUserCases: AuthenticationUserCases,
     val fireStoreCloudUserCases: FireStoreCloudUserCases,
-    val fireBaseStorageUserCases: FireBaseStorageUserCases
+    val fireBaseStorageUserCases: FireBaseStorageUserCases,
+    val sharedPreferencesUserCases: SharedPreferencesUserCases
 ) : ViewModel() {
 
     sealed class CompleteInformationNavigation {
@@ -100,5 +102,9 @@ class CompleteInformationViewModel @Inject constructor(
                     Event(CompleteInformationNavigation.VerificationError("Error getting url"))
             }
         })
+    }
+
+    fun setUserLoginAuthStatus(context: Context, isUserAuth: Boolean) {
+        sharedPreferencesUserCases.setUserLoginAuthStatus.invoke(context, isUserAuth)
     }
 }

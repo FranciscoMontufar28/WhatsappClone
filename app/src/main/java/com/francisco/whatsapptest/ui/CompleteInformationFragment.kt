@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.NavHostFragment
+import com.francisco.whatsapptest.R
 import com.francisco.whatsapptest.WhatsApp
 import com.francisco.whatsapptest.databinding.FragmentCompleteInformationBinding
 import com.francisco.whatsapptest.di.CompleteInformationComponent
@@ -94,7 +96,11 @@ class CompleteInformationFragment : Fragment() {
     }
 
     private fun toGoMessages() {
-
+        completeInformationViewModel.setUserLoginAuthStatus(requireContext(), true)
+        val navHostFragment =
+            requireActivity().supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        navController.navigate(R.id.action_completeInformationFragment_to_mainChatFragment)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -125,7 +131,7 @@ class CompleteInformationFragment : Fragment() {
         when (requestCode) {
             PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Pix.start(requireActivity(), mOptions);
+                    Pix.start(this, mOptions);
                 } else {
                     Toast.makeText(
                         requireContext(),

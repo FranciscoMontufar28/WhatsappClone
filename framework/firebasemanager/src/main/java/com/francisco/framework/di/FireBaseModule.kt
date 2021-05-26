@@ -92,17 +92,8 @@ class FireBaseModule {
     fun provideFireStoreCloudDataSource(userProvider: UserProvider): FireStoreCloudDataSource =
         FireStoreCloudDataSourceImpl(userProvider)
 
-    /*@Provides
-    @Singleton
-    @Named("firebaseStorage")
-    fun provideStorageReference() = Firebase.storage*/
-
     @Provides
-    fun provideFireStorageParameters(
-        //@Named("firebaseStorage") firebaseStorage: FirebaseStorage
-    ) = FireStorageParameters(
-        //firebaseStorage
-    )
+    fun provideFireStorageParameters() = FireStorageParameters()
 
     @Provides
     fun provideImageProvider(fireStorageParameters: FireStorageParameters) =
