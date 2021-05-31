@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.MainChatFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.mancj.materialsearchbar.MaterialSearchBar
+        android:id="@+id/search_bar_chat"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:mt_backIconTint="@color/gray"
+        app:mt_hint="Buscar"
+        app:mt_hintColor="@color/gray"
+        app:mt_menuIconTint="@color/gray"
+        app:mt_placeholder="WhatsApp"
+        app:mt_placeholderColor="@color/white"
+        app:mt_searchBarColor="@color/purple_500"
+        app:mt_searchIconTint="@color/white"
+        app:mt_textColor="@color/gray"
+        app:mt_backIconUseTint="true"/>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

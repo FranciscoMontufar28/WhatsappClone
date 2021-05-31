@@ -63,6 +63,9 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines"
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation  'com.fxn769:pix:1.5.6'
+
+    implementation 'com.github.mancj:MaterialSearchBar:0.8.5'
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

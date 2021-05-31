@@ -46,5 +46,11 @@
         android:id="@+id/mainChatFragment"
         android:name="com.francisco.whatsapptest.ui.MainChatFragment"
         android:label="fragment_main_chat"
-        tools:layout="@layout/fragment_main_chat" />
+        tools:layout="@layout/fragment_main_chat" >
+        <action
+            android:id="@+id/action_mainChatFragment_to_onBoardingFragment"
+            app:destination="@id/onBoardingFragment"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

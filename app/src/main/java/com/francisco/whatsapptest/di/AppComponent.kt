@@ -22,6 +22,7 @@ interface AppComponent {
     fun inject(module: CodeVerificationModule): CodeVerificationComponent
     fun inject(module: CompleteInformationModule): CompleteInformationComponent
     fun inject(module: OnBoardingModule): OnBoardingComponent
+    fun inject(module: MainChatModule): MainChatComponent
 
     @Component.Factory
     interface Factory {

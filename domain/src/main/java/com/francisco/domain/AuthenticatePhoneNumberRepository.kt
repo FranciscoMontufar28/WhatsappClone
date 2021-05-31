@@ -16,4 +16,6 @@ interface AuthenticatePhoneNumberRepository {
     )
 
     fun getAuthCurrentUser(): String?
+
+    fun signOut()
 }

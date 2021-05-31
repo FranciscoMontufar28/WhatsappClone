@@ -5,7 +5,8 @@ import com.francisco.domain.OnFireStoreCloudListener
 import com.francisco.domain.UserDomain
 import javax.inject.Inject
 
-class FireStoreRepositoryImpl @Inject constructor(var fireStoreCloudDataSource: FireStoreCloudDataSource): FireStoreRepository {
+class FireStoreRepositoryImpl @Inject constructor(var fireStoreCloudDataSource: FireStoreCloudDataSource) :
+    FireStoreRepository {
 
     override fun createAuthUser(
         user: UserDomain,
@@ -19,5 +20,12 @@ class FireStoreRepositoryImpl @Inject constructor(var fireStoreCloudDataSource: 
         onFireStoreCloudListener: OnFireStoreCloudListener
     ) {
         fireStoreCloudDataSource.updateAuthUser(user, onFireStoreCloudListener)
+    }
+
+    override fun validateIfUserExist(
+        userId: String,
+        onFireStoreCloudListener: OnFireStoreCloudListener
+    ) {
+        fireStoreCloudDataSource.validateIfUserExist(userId, onFireStoreCloudListener)
     }
 }

@@ -22,6 +22,9 @@ class UserCaseModule {
             ),
             GetAuthCurrentUser(
                 repository
+            ),
+            SignOutUserAuth(
+                repository
             )
         )
 
@@ -32,6 +35,9 @@ class UserCaseModule {
                 fireStoreRepository
             ),
             UpdateAuthCurrentUser(
+                fireStoreRepository
+            ),
+            ValidateIfUserExist(
                 fireStoreRepository
             )
         )

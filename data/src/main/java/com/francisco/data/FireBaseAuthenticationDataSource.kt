@@ -18,4 +18,6 @@ interface FireBaseAuthenticationDataSource {
     )
 
     fun getCurrentUser(): String?
+
+    fun signOut()
 }

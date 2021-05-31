@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.francisco.domain.OnFireBaseStorageListener
 import com.francisco.domain.OnFireStoreCloudListener
+import com.francisco.domain.OnFireStoreCloudResponse
 import com.francisco.domain.UserDomain
 import com.francisco.usercases.AuthenticationUserCases
 import com.francisco.usercases.FireBaseStorageUserCases
@@ -46,7 +47,7 @@ class CompleteInformationViewModel @Inject constructor(
             val userDomain = UserDomain(id = id, nickname = username, image = image)
             fireStoreCloudUserCases.updateAuthCurrentUser.invoke(
                 userDomain, object : OnFireStoreCloudListener {
-                    override fun addOnSuccessListener() {
+                    override fun addOnSuccessListener(state: OnFireStoreCloudResponse) {
                         _event.value =
                             Event(CompleteInformationNavigation.HideLoading)
                         _event.value =

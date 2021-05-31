@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import com.francisco.whatsapptest.MainActivity
@@ -73,10 +72,12 @@ class CodeVerificationFragment : Fragment() {
                 is CodeVerificationViewModel.CodeVerificationNavigation.VerificationSuccess -> navigation.run {
                     when (this.type) {
                         SuccessCode.AUTHENTICATEUSER -> {
-                            displayCodeVerification(this.code)
-                            saveAuthUser(mExtraPhone)
+                            //displayCodeVerification(this.code)
+                            validateIfUserExist(this.userId)
+                            //saveAuthUser(mExtraPhone)
                         }
-                        SuccessCode.SAVEDUSER -> toGoCompleteInformationFragment()
+                        SuccessCode.USEREXIST -> onUserExist()
+                        SuccessCode.NEWUSER -> saveAuthUser(mExtraPhone)
                     }
                 }
                 is CodeVerificationViewModel.CodeVerificationNavigation.VerificationError -> navigation.run {
@@ -88,6 +89,14 @@ class CodeVerificationFragment : Fragment() {
         }
     }
 
+    private fun onUserExist() {
+
+    }
+
+    private fun validateIfUserExist(userId: String) {
+        codeVerificationViewModel.validateIfUserExist(userId)
+    }
+
     private fun actionButtonValidation() {
         binding.btValidateCode.setOnClickListener {
             val code = binding.etCodeVerification.text.toString()
@@ -97,13 +106,15 @@ class CodeVerificationFragment : Fragment() {
     }
 
     private fun toGoCompleteInformationFragment() {
-        val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
+        val navHostFragment =
+            requireActivity().supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
         val navController = navHostFragment.navController
         navController.navigate(R.id.completeInformationFragment)
     }
 
     private fun saveAuthUser(mExtraPhone: String?) {
         mExtraPhone?.let { codeVerificationViewModel.saveAuthCurrentUser(it) }
+        toGoCompleteInformationFragment()
     }
 
     private fun displayCodeVerification(code: String) {

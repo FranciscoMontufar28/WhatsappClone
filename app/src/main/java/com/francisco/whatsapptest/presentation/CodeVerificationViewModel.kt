@@ -4,10 +4,7 @@ import android.app.Activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.francisco.domain.OnCompleteFireBaseListener
-import com.francisco.domain.OnFireStoreCloudListener
-import com.francisco.domain.OnVerificationFireBaseStateChanged
-import com.francisco.domain.UserDomain
+import com.francisco.domain.*
 import com.francisco.usercases.AuthenticationUserCases
 import com.francisco.usercases.FireStoreCloudUserCases
 import com.francisco.whatsapptest.util.Event
@@ -23,7 +20,7 @@ class CodeVerificationViewModel @Inject constructor(
     lateinit var mVerificationId: String
 
     sealed class CodeVerificationNavigation {
-        data class VerificationSuccess(val type: SuccessCode, val code: String = "") :
+        data class VerificationSuccess(val type: SuccessCode, val userId: String = "") :
             CodeVerificationNavigation()
 
         data class VerificationError(val error: String) : CodeVerificationNavigation()
@@ -65,19 +62,24 @@ class CodeVerificationViewModel @Inject constructor(
             code,
             mVerificationId,
             object : OnCompleteFireBaseListener {
-                override fun onCompleteListener(isCompleted: Boolean) {
-                    if (isCompleted) {
-                        _event.value =
-                            Event(
-                                CodeVerificationNavigation.VerificationSuccess(
-                                    SuccessCode.AUTHENTICATEUSER,
-                                    code
-                                )
+                override fun onSuccessCompleteListener(userId: String) {
+                    _event.value =
+                        Event(
+                            CodeVerificationNavigation.VerificationSuccess(
+                                SuccessCode.AUTHENTICATEUSER,
+                                userId
                             )
-                    } else {
-                        _event.value =
-                            Event(CodeVerificationNavigation.VerificationError("The code doesn't match"))
-                    }
+                        )
+                }
+
+                override fun onFailCompleteListener() {
+                    _event.value =
+                        Event(CodeVerificationNavigation.VerificationError("The code doesn't match"))
+                }
+
+                override fun onSuccessCompleteNullUserListener() {
+                    _event.value =
+                        Event(CodeVerificationNavigation.VerificationError("There is an error getting the information"))
                 }
             })
     }
@@ -87,10 +89,9 @@ class CodeVerificationViewModel @Inject constructor(
             val userDomain = UserDomain(id = id, phone = phoneNumber)
             fireStoreCloudUserCases.saveAuthCurrentUser.invoke(
                 userDomain, object : OnFireStoreCloudListener {
-                    override fun addOnSuccessListener() {
+                    override fun addOnSuccessListener(state: OnFireStoreCloudResponse) {
                         _event.value = Event(CodeVerificationNavigation.HideLoading)
-                        _event.value =
-                            Event(CodeVerificationNavigation.VerificationSuccess(SuccessCode.SAVEDUSER))
+
                     }
 
                     override fun addOnFailureListener(exception: Exception) {
@@ -103,7 +104,28 @@ class CodeVerificationViewModel @Inject constructor(
         }
     }
 
+    fun validateIfUserExist(id: String) {
+        fireStoreCloudUserCases.validateIfUserExist.invoke(id, object : OnFireStoreCloudListener {
+            override fun addOnSuccessListener(state: OnFireStoreCloudResponse) {
+                if (state == OnFireStoreCloudResponse.NEW_USER) {
+                    _event.value =
+                        Event(CodeVerificationNavigation.VerificationSuccess(SuccessCode.NEWUSER))
+                } else {
+                    _event.value =
+                        Event(CodeVerificationNavigation.VerificationSuccess(SuccessCode.USEREXIST))
+                }
+            }
+
+            override fun addOnFailureListener(exception: Exception) {
+                _event.value =
+                    Event(CodeVerificationNavigation.VerificationError(exception.message?: "Generic error"))
+            }
+
+        })
+    }
+
     private fun getAuthCurrentUser(): String? {
         return authenticationUserCases.getAuthCurrentUser.invoke()
     }
+
 }

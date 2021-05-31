@@ -2,7 +2,8 @@ package com.francisco.whatsapptest.util
 
 enum class SuccessCode {
     AUTHENTICATEUSER,
-    SAVEDUSER
+    NEWUSER,
+    USEREXIST
 }
 
 enum class ImageCode {
