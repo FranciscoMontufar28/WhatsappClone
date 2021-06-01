@@ -1,8 +1,8 @@
 package com.francisco.usercases.di
 
-import com.francisco.domain.AuthenticatePhoneNumberRepository
+import com.francisco.domain.FirebaseAuthenticationRepository
 import com.francisco.domain.FireBaseStorageRepository
-import com.francisco.domain.FireStoreRepository
+import com.francisco.domain.FireStoreDatabaseRepository
 import com.francisco.domain.SharedPreferencesRepository
 import com.francisco.usercases.*
 import dagger.Module
@@ -12,33 +12,36 @@ import dagger.Provides
 class UserCaseModule {
 
     @Provides
-    fun provideAuthenticationUserCases(repository: AuthenticatePhoneNumberRepository) =
+    fun provideAuthenticationUserCases(firebaseAuthenticationRepository: FirebaseAuthenticationRepository) =
         AuthenticationUserCases(
             AuthenticatePhoneNumber(
-                repository
+                firebaseAuthenticationRepository
             ),
             SignInWithPhoneNumber(
-                repository
+                firebaseAuthenticationRepository
             ),
             GetAuthCurrentUser(
-                repository
+                firebaseAuthenticationRepository
             ),
             SignOutUserAuth(
-                repository
+                firebaseAuthenticationRepository
             )
         )
 
     @Provides
-    fun provideFireStoreCloudUserCases(fireStoreRepository: FireStoreRepository) =
-        FireStoreCloudUserCases(
+    fun provideFireStoreCloudUserCases(fireStoreDatabaseRepository: FireStoreDatabaseRepository) =
+        FireStoreDatabaseUserCases(
             SaveAuthCurrentUser(
-                fireStoreRepository
+                fireStoreDatabaseRepository
             ),
             UpdateAuthCurrentUser(
-                fireStoreRepository
+                fireStoreDatabaseRepository
             ),
             ValidateIfUserExist(
-                fireStoreRepository
+                fireStoreDatabaseRepository
+            ),
+            GetUserInformation(
+                fireStoreDatabaseRepository
             )
         )
 

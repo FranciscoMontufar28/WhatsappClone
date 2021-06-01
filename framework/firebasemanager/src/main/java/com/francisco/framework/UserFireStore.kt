@@ -15,3 +15,10 @@ fun UserDomain.toUserFireStore(): UserFireStore = UserFireStore(
     phone = this.phone,
     image = this.image
 )
+
+fun UserFireStore.toUserDomain(): UserDomain = UserDomain(
+    id = this.id,
+    nickname = this.nickname,
+    phone = this.phone,
+    image = this.image
+)

@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.francisco.domain.*
 import com.francisco.usercases.AuthenticationUserCases
-import com.francisco.usercases.FireStoreCloudUserCases
+import com.francisco.usercases.FireStoreDatabaseUserCases
 import com.francisco.whatsapptest.util.Event
 import com.francisco.whatsapptest.util.SuccessCode
 import java.lang.Exception
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class CodeVerificationViewModel @Inject constructor(
     val authenticationUserCases: AuthenticationUserCases,
-    val fireStoreCloudUserCases: FireStoreCloudUserCases
+    val fireStoreDatabaseUserCases: FireStoreDatabaseUserCases
 ) :
     ViewModel() {
     lateinit var mVerificationId: String
@@ -87,7 +87,7 @@ class CodeVerificationViewModel @Inject constructor(
     fun saveAuthCurrentUser(phoneNumber: String) {
         getAuthCurrentUser()?.let { id ->
             val userDomain = UserDomain(id = id, phone = phoneNumber)
-            fireStoreCloudUserCases.saveAuthCurrentUser.invoke(
+            fireStoreDatabaseUserCases.saveAuthCurrentUser.invoke(
                 userDomain, object : OnFireStoreCloudListener {
                     override fun addOnSuccessListener(state: OnFireStoreCloudResponse) {
                         _event.value = Event(CodeVerificationNavigation.HideLoading)
@@ -105,7 +105,7 @@ class CodeVerificationViewModel @Inject constructor(
     }
 
     fun validateIfUserExist(id: String) {
-        fireStoreCloudUserCases.validateIfUserExist.invoke(id, object : OnFireStoreCloudListener {
+        fireStoreDatabaseUserCases.validateIfUserExist.invoke(id, object : OnFireStoreCloudListener {
             override fun addOnSuccessListener(state: OnFireStoreCloudResponse) {
                 if (state == OnFireStoreCloudResponse.NEW_USER) {
                     _event.value =

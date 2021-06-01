@@ -12,6 +12,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
+import com.francisco.imagemanager.loadFileImage
+import com.francisco.imagemanager.loadUrlImage
 import com.francisco.whatsapptest.R
 import com.francisco.whatsapptest.WhatsApp
 import com.francisco.whatsapptest.databinding.FragmentCompleteInformationBinding
@@ -20,6 +22,7 @@ import com.francisco.whatsapptest.di.CompleteInformationModule
 import com.francisco.whatsapptest.presentation.CompleteInformationViewModel
 import com.francisco.whatsapptest.util.Event
 import com.francisco.whatsapptest.util.ImageCode
+import com.francisco.whatsapptest.util.VerificationUserResponse
 import com.francisco.whatsapptest.util.getViewModel
 import com.fxn.pix.Options
 import com.fxn.pix.Pix
@@ -62,6 +65,22 @@ class CompleteInformationFragment : Fragment() {
         initOptions()
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val args = arguments?.let {
+            CompleteInformationFragmentArgs.fromBundle(it).userState
+        }
+        if (args.isNullOrEmpty()
+                .not() && args.equals(VerificationUserResponse.USER_EXIST.toString())
+        ) {
+            getUserInformation()
+        }
+    }
+
+    private fun getUserInformation() {
+        completeInformationViewModel.getUserInformation()
+    }
+
     private fun onImageClickListener() {
         binding.ivCompleteInformation.setOnClickListener {
             startPix()
@@ -91,8 +110,17 @@ class CompleteInformationFragment : Fragment() {
                         }
                     }
                 }
+                is CompleteInformationViewModel.CompleteInformationNavigation.UserData -> navigation.run {
+                    val userDomain = this.userDomain
+                    displayUserInformation(userDomain.nickname, userDomain.image)
+                }
             }
         }
+    }
+
+    private fun displayUserInformation(nickname: String?, image: String?) {
+        nickname?.let { binding.etCompleteUsername.setText(it) }
+        image?.let { binding.ivCompleteInformation.loadUrlImage(requireContext(), it) }
     }
 
     private fun toGoMessages() {
@@ -111,11 +139,7 @@ class CompleteInformationFragment : Fragment() {
                 returnValue?.let { value ->
                     mImageFile = File(value[0])
                     mImageFile?.let { resultFile ->
-                        binding.ivCompleteInformation.setImageBitmap(
-                            BitmapFactory.decodeFile(
-                                resultFile.absolutePath
-                            )
-                        )
+                        binding.ivCompleteInformation.loadFileImage(requireContext(), resultFile)
                     }
                 }
             }

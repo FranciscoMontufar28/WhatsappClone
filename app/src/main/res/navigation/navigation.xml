@@ -41,6 +41,9 @@
             app:destination="@id/mainChatFragment"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="userState"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/mainChatFragment"

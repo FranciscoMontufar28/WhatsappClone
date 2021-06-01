@@ -5,13 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.francisco.domain.OnFireBaseStorageListener
-import com.francisco.domain.OnFireStoreCloudListener
-import com.francisco.domain.OnFireStoreCloudResponse
-import com.francisco.domain.UserDomain
+import com.francisco.domain.*
 import com.francisco.usercases.AuthenticationUserCases
 import com.francisco.usercases.FireBaseStorageUserCases
-import com.francisco.usercases.FireStoreCloudUserCases
+import com.francisco.usercases.FireStoreDatabaseUserCases
 import com.francisco.usercases.SharedPreferencesUserCases
 import com.francisco.whatsapptest.util.Event
 import com.francisco.whatsapptest.util.ImageCode
@@ -21,12 +18,13 @@ import javax.inject.Inject
 
 class CompleteInformationViewModel @Inject constructor(
     val authenticationUserCases: AuthenticationUserCases,
-    val fireStoreCloudUserCases: FireStoreCloudUserCases,
+    val fireStoreDatabaseUserCases: FireStoreDatabaseUserCases,
     val fireBaseStorageUserCases: FireBaseStorageUserCases,
     val sharedPreferencesUserCases: SharedPreferencesUserCases
 ) : ViewModel() {
 
     sealed class CompleteInformationNavigation {
+        data class UserData(val userDomain: UserDomain) : CompleteInformationNavigation()
         object VerificationSuccess : CompleteInformationNavigation()
         data class VerificationError(val error: String) : CompleteInformationNavigation()
         data class ImageSavedState(val imageCode: ImageCode, val data: String?) :
@@ -45,7 +43,7 @@ class CompleteInformationViewModel @Inject constructor(
         _event.value = Event(CompleteInformationNavigation.ShowLoading)
         getAuthCurrentUser()?.let { id ->
             val userDomain = UserDomain(id = id, nickname = username, image = image)
-            fireStoreCloudUserCases.updateAuthCurrentUser.invoke(
+            fireStoreDatabaseUserCases.updateAuthCurrentUser.invoke(
                 userDomain, object : OnFireStoreCloudListener {
                     override fun addOnSuccessListener(state: OnFireStoreCloudResponse) {
                         _event.value =
@@ -107,5 +105,24 @@ class CompleteInformationViewModel @Inject constructor(
 
     fun setUserLoginAuthStatus(context: Context, isUserAuth: Boolean) {
         sharedPreferencesUserCases.setUserLoginAuthStatus.invoke(context, isUserAuth)
+    }
+
+    fun getUserInformation() {
+        val id = authenticationUserCases.getAuthCurrentUser.invoke()
+        id?.let {
+            fireStoreDatabaseUserCases.getUserInformation.invoke(it, object :
+                OnGetUserInformationResponse {
+                override fun addOnSuccessListener(userDomain: UserDomain) {
+                    _event.value =
+                        Event(CompleteInformationNavigation.UserData(userDomain))
+                }
+
+                override fun addOnFailureListener(exception: java.lang.Exception) {
+                    _event.value =
+                        Event(CompleteInformationNavigation.VerificationError("The is an error getting user information"))
+                }
+
+            })
+        }
     }
 }

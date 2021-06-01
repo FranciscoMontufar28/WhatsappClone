@@ -15,10 +15,7 @@ import com.francisco.whatsapptest.databinding.FragmentCodeVerificationBinding
 import com.francisco.whatsapptest.di.CodeVerificationComponent
 import com.francisco.whatsapptest.di.CodeVerificationModule
 import com.francisco.whatsapptest.presentation.CodeVerificationViewModel
-import com.francisco.whatsapptest.util.Event
-import com.francisco.whatsapptest.util.SuccessCode
-import com.francisco.whatsapptest.util.getViewModel
-import com.francisco.whatsapptest.util.hideKeyboard
+import com.francisco.whatsapptest.util.*
 
 class CodeVerificationFragment : Fragment() {
 
@@ -90,7 +87,7 @@ class CodeVerificationFragment : Fragment() {
     }
 
     private fun onUserExist() {
-
+        toGoCompleteInformationFragment(VerificationUserResponse.USER_EXIST)
     }
 
     private fun validateIfUserExist(userId: String) {
@@ -105,16 +102,20 @@ class CodeVerificationFragment : Fragment() {
         }
     }
 
-    private fun toGoCompleteInformationFragment() {
+    private fun toGoCompleteInformationFragment(verificationUserResponse: VerificationUserResponse) {
         val navHostFragment =
             requireActivity().supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
         val navController = navHostFragment.navController
-        navController.navigate(R.id.completeInformationFragment)
+        val action =
+            CodeVerificationFragmentDirections.actionCodeVerificationFragmentToCompleteInformationFragment(
+                verificationUserResponse.toString()
+            )
+        navController.navigate(action)
     }
 
     private fun saveAuthUser(mExtraPhone: String?) {
         mExtraPhone?.let { codeVerificationViewModel.saveAuthCurrentUser(it) }
-        toGoCompleteInformationFragment()
+        toGoCompleteInformationFragment(VerificationUserResponse.NEW_USER)
     }
 
     private fun displayCodeVerification(code: String) {

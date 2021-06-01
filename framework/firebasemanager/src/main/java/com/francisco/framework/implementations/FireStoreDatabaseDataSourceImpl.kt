@@ -1,15 +1,18 @@
 package com.francisco.framework.implementations
 
-import com.francisco.data.FireStoreCloudDataSource
+import com.francisco.data.FireStoreDatabaseDataSource
 import com.francisco.domain.OnFireStoreCloudListener
 import com.francisco.domain.OnFireStoreCloudResponse
+import com.francisco.domain.OnGetUserInformationResponse
 import com.francisco.domain.UserDomain
+import com.francisco.framework.UserFireStore
 import com.francisco.framework.providers.UserProvider
+import com.francisco.framework.toUserDomain
 import com.francisco.framework.toUserFireStore
 import javax.inject.Inject
 
-class FireStoreCloudDataSourceImpl @Inject constructor(var userProvider: UserProvider) :
-    FireStoreCloudDataSource {
+class FireStoreDatabaseDataSourceImpl @Inject constructor(var userProvider: UserProvider) :
+    FireStoreDatabaseDataSource {
 
     override fun createAuthUser(
         user: UserDomain,
@@ -47,5 +50,22 @@ class FireStoreCloudDataSourceImpl @Inject constructor(var userProvider: UserPro
         }.addOnFailureListener {
             onFireStoreCloudListener.addOnFailureListener(it)
         }
+    }
+
+    override fun getUserInformation(
+        userId: String,
+        onGetUserInformationResponse: OnGetUserInformationResponse
+    ) {
+        userProvider.getUserInfo(userId).get()
+            .addOnSuccessListener {
+                val userEntity = UserFireStore(
+                    id = it.id,
+                    nickname = it.getString("nickname"),
+                    image = it.getString("image"),
+                    phone = it.getString("phone")
+                )
+                onGetUserInformationResponse.addOnSuccessListener(userEntity.toUserDomain())
+            }
+            .addOnFailureListener { onGetUserInformationResponse.addOnFailureListener(it) }
     }
 }

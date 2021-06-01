@@ -2,7 +2,7 @@ package com.francisco.domain
 
 import android.app.Activity
 
-interface AuthenticatePhoneNumberRepository {
+interface FirebaseAuthenticationRepository {
     fun authenticateWithPhoneNumber(
         phoneNumber: String,
         activity: Activity,

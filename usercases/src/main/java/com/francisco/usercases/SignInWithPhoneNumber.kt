@@ -1,10 +1,10 @@
 package com.francisco.usercases
 
-import com.francisco.domain.AuthenticatePhoneNumberRepository
+import com.francisco.domain.FirebaseAuthenticationRepository
 import com.francisco.domain.OnCompleteFireBaseListener
 import javax.inject.Inject
 
-class SignInWithPhoneNumber @Inject constructor(var repository: AuthenticatePhoneNumberRepository) {
+class SignInWithPhoneNumber @Inject constructor(var repository: FirebaseAuthenticationRepository) {
 
     fun invoke(
         code: String,

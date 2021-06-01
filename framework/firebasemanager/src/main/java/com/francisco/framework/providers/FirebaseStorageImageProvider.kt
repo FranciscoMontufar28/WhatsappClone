@@ -3,9 +3,8 @@ package com.francisco.framework.providers
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import com.francisco.framework.requestparameters.FireStorageParameters
+import com.francisco.framework.requestparameters.FirebaseStorageParameters
 import com.google.android.gms.tasks.Task
-import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.format
@@ -15,12 +14,12 @@ import id.zelory.compressor.constraint.size
 import java.io.File
 import java.util.*
 
-class ImageProvider(fireStorageParameters: FireStorageParameters) :
-    StorageRequest(fireStorageParameters)
+class ImageProvider(firebaseStorageParameters: FirebaseStorageParameters) :
+    StorageRequest(firebaseStorageParameters)
 
-abstract class StorageRequest(var fireStorageParameters: FireStorageParameters) {
+abstract class StorageRequest(var firebaseStorageParameters: FirebaseStorageParameters) {
 
-    var reference = fireStorageParameters.firebaseStorage.reference
+    var reference = firebaseStorageParameters.firebaseStorage.reference
 
     suspend fun saveImage(context: Context, file: File): UploadTask {
         val compressedImageFile = Compressor.compress(context, file) {

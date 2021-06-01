@@ -1,9 +1,9 @@
 package com.francisco.usercases
 
-import com.francisco.domain.AuthenticatePhoneNumberRepository
+import com.francisco.domain.FirebaseAuthenticationRepository
 import javax.inject.Inject
 
-class GetAuthCurrentUser @Inject constructor(val repository: AuthenticatePhoneNumberRepository) {
+class GetAuthCurrentUser @Inject constructor(val repository: FirebaseAuthenticationRepository) {
     fun invoke(): String? {
         return repository.getAuthCurrentUser()
     }
