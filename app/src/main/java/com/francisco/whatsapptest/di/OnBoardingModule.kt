@@ -1,6 +1,6 @@
 package com.francisco.whatsapptest.di
 
-import com.francisco.usercases.SharedPreferencesUserCases
+import com.francisco.domain.usercases.SharedPreferencesUserCases
 import com.francisco.whatsapptest.presentation.OnBoardingViewModel
 import dagger.Module
 import dagger.Subcomponent

@@ -5,14 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentPagerAdapter
 import androidx.navigation.fragment.NavHostFragment
+import androidx.viewpager2.widget.ViewPager2
 import com.francisco.whatsapptest.R
 import com.francisco.whatsapptest.WhatsApp
+import com.francisco.whatsapptest.adapter.ViewPagerChatAdapter
 import com.francisco.whatsapptest.databinding.FragmentMainChatBinding
 import com.francisco.whatsapptest.di.MainChatComponent
 import com.francisco.whatsapptest.di.MainChatModule
 import com.francisco.whatsapptest.presentation.MainChatViewModel
 import com.francisco.whatsapptest.util.getViewModel
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.mancj.materialsearchbar.MaterialSearchBar
 
 class MainChatFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
@@ -20,6 +25,9 @@ class MainChatFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
     private lateinit var mainChatComponent: MainChatComponent
     private var _binding: FragmentMainChatBinding? = null
     private val binding get() = _binding!!
+    private val viewPagerAdapter: ViewPagerChatAdapter by lazy { ViewPagerChatAdapter(this) }
+    private val viewPager: ViewPager2 by lazy { binding.mainChatViewPager }
+    private val tabLayout: TabLayout by lazy { binding.mainChatTabLayout }
     private val mainChatViewModel: MainChatViewModel by lazy {
         getViewModel { mainChatComponent.mainChatViewModel }
     }
@@ -27,7 +35,7 @@ class MainChatFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMainChatBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -65,6 +73,26 @@ class MainChatFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
             }
             return@setOnMenuItemClickListener true
         }
+        setUpTabLayout()
+    }
+
+    private fun setUpTabLayout() {
+        viewPagerAdapter.setFragments(
+            arrayListOf(
+                ChatListFragment(),
+                StatusListFragment(),
+                CallListFragment()
+            )
+        )
+        viewPager.adapter = viewPagerAdapter
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> "Chats"
+                1 -> "Status"
+                2 -> "Calls"
+                else -> ""
+            }
+        }.attach()
     }
 
     private fun signOut() {

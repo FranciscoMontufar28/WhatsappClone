@@ -4,8 +4,6 @@ import android.content.Context
 import com.francisco.data.FireBaseStorageDataSource
 import com.francisco.domain.OnFireBaseStorageListener
 import com.francisco.framework.providers.ImageProvider
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import java.io.File
 import javax.inject.Inject
 

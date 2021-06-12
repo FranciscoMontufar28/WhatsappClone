@@ -1,9 +1,9 @@
 package com.francisco.whatsapptest.di
 
-import com.francisco.usercases.AuthenticationUserCases
-import com.francisco.usercases.FireBaseStorageUserCases
-import com.francisco.usercases.FireStoreDatabaseUserCases
-import com.francisco.usercases.SharedPreferencesUserCases
+import com.francisco.domain.usercases.AuthenticationUserCases
+import com.francisco.domain.usercases.FireBaseStorageUserCases
+import com.francisco.domain.usercases.FireStoreDatabaseUserCases
+import com.francisco.domain.usercases.SharedPreferencesUserCases
 import com.francisco.whatsapptest.presentation.CompleteInformationViewModel
 import dagger.Module
 import dagger.Provides

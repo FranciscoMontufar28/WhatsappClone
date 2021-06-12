@@ -6,10 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.francisco.domain.*
-import com.francisco.usercases.AuthenticationUserCases
-import com.francisco.usercases.FireBaseStorageUserCases
-import com.francisco.usercases.FireStoreDatabaseUserCases
-import com.francisco.usercases.SharedPreferencesUserCases
+import com.francisco.domain.usercases.AuthenticationUserCases
+import com.francisco.domain.usercases.FireBaseStorageUserCases
+import com.francisco.domain.usercases.FireStoreDatabaseUserCases
+import com.francisco.domain.usercases.SharedPreferencesUserCases
 import com.francisco.whatsapptest.util.Event
 import com.francisco.whatsapptest.util.ImageCode
 import kotlinx.coroutines.launch

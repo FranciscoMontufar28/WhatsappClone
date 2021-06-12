@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.francisco.usercases.SharedPreferencesUserCases
+import com.francisco.domain.usercases.SharedPreferencesUserCases
 import javax.inject.Inject
 
 class OnBoardingViewModel @Inject constructor(val sharedPreferencesUserCases: SharedPreferencesUserCases) :

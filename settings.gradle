@@ -1,8 +1,7 @@
 include ':framework:imagemanager'
 include ':framework:sharedpreferences'
-include ':domain'
 include ':data'
-include ':usercases'
+include ':domain'
 include ':framework:firebasemanager'
 include ':app'
 rootProject.name = "WhatsappClone"

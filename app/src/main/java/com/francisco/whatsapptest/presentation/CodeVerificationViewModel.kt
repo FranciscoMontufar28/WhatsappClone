@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.francisco.domain.*
-import com.francisco.usercases.AuthenticationUserCases
-import com.francisco.usercases.FireStoreDatabaseUserCases
+import com.francisco.domain.usercases.AuthenticationUserCases
+import com.francisco.domain.usercases.FireStoreDatabaseUserCases
 import com.francisco.whatsapptest.util.Event
 import com.francisco.whatsapptest.util.SuccessCode
 import java.lang.Exception

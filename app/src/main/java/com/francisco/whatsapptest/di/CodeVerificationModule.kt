@@ -1,7 +1,7 @@
 package com.francisco.whatsapptest.di
 
-import com.francisco.usercases.AuthenticationUserCases
-import com.francisco.usercases.FireStoreDatabaseUserCases
+import com.francisco.domain.usercases.AuthenticationUserCases
+import com.francisco.domain.usercases.FireStoreDatabaseUserCases
 import com.francisco.whatsapptest.presentation.CodeVerificationViewModel
 import dagger.Module
 import dagger.Provides

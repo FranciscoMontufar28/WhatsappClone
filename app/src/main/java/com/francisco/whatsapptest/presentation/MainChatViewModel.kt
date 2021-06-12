@@ -2,8 +2,8 @@ package com.francisco.whatsapptest.presentation
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
-import com.francisco.usercases.AuthenticationUserCases
-import com.francisco.usercases.SharedPreferencesUserCases
+import com.francisco.domain.usercases.AuthenticationUserCases
+import com.francisco.domain.usercases.SharedPreferencesUserCases
 import javax.inject.Inject
 
 class MainChatViewModel @Inject constructor(
