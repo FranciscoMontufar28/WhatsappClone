@@ -34,9 +34,9 @@ android {
 }
 
 dependencies {
-    implementation project(":data")
-    def dagger_version = "2.27"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "com.google.dagger:dagger:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    implementation project(Modules.data)
+
+    implementation Dependencies.kotlinStdLib
+    implementation Dependencies.dagger
+    kapt Dependencies.daggerCompiler
 }
