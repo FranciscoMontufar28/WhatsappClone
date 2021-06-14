@@ -1,5 +1,7 @@
 package com.francisco.domain
 
 interface OnCompleteFireBaseListener {
-    fun onCompleteListener(isCompleted: Boolean)
+    fun onSuccessCompleteListener(id: String)
+    fun onFailCompleteListener()
+    fun onSuccessCompleteNullUserListener()
 }

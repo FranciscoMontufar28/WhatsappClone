@@ -51,9 +51,20 @@ class FireBaseAuthenticationDataSourceImpl @Inject constructor(
         onCompleteFireBaseListener: OnCompleteFireBaseListener
     ) {
         authProvider.singInPhone(mVerificationId, code).addOnCompleteListener {
-            val isSuccess = it.isSuccessful
-            onCompleteFireBaseListener.onCompleteListener(isSuccess)
+            if (it.isSuccessful) {
+                if (authProvider.getCurrentUser().isNullOrEmpty().not()) {
+                    onCompleteFireBaseListener.onSuccessCompleteListener(authProvider.getCurrentUser()!!)
+                } else {
+                    onCompleteFireBaseListener.onSuccessCompleteNullUserListener()
+                }
+            } else {
+                onCompleteFireBaseListener.onFailCompleteListener()
+            }
         }
+    }
+
+    override fun signOut() {
+        authProvider.signOut()
     }
 
     override fun getCurrentUser(): String? {

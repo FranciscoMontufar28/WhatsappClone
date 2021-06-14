@@ -1,7 +1,9 @@
 package com.francisco.whatsapptest.di
 
-import com.francisco.usercases.AuthenticationUserCases
-import com.francisco.usercases.FireStoreCloudUserCases
+import com.francisco.domain.usercases.AuthenticationUserCases
+import com.francisco.domain.usercases.FireBaseStorageUserCases
+import com.francisco.domain.usercases.FireStoreDatabaseUserCases
+import com.francisco.domain.usercases.SharedPreferencesUserCases
 import com.francisco.whatsapptest.presentation.CompleteInformationViewModel
 import dagger.Module
 import dagger.Provides
@@ -13,8 +15,15 @@ class CompleteInformationModule {
     @Provides
     fun provideCompleteInformationViewModel(
         authenticationUserCases: AuthenticationUserCases,
-        fireStoreCloudUserCases: FireStoreCloudUserCases
-    ) = CompleteInformationViewModel(authenticationUserCases, fireStoreCloudUserCases)
+        fireStoreDatabaseUserCases: FireStoreDatabaseUserCases,
+        fireBaseStorageUserCases: FireBaseStorageUserCases,
+        sharedPreferencesUserCases: SharedPreferencesUserCases
+    ) = CompleteInformationViewModel(
+        authenticationUserCases,
+        fireStoreDatabaseUserCases,
+        fireBaseStorageUserCases,
+        sharedPreferencesUserCases
+    )
 }
 
 @Subcomponent(modules = [CompleteInformationModule::class])

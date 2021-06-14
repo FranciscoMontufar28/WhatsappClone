@@ -34,6 +34,10 @@ abstract class AuthBaseRequest(var parametersFire: FireBaseAuthenticationParamet
         return parametersFire.firebaseAuth.signInWithCredential(credential)
     }
 
+    fun signOut() {
+        parametersFire.firebaseAuth.signOut()
+    }
+
     fun getCurrentUser(): String? {
         return if (parametersFire.firebaseAuth.currentUser != null) {
             parametersFire.firebaseAuth.currentUser.uid

@@ -1,7 +1,7 @@
 package com.francisco.whatsapptest.di
 
-import com.francisco.usercases.AuthenticationUserCases
-import com.francisco.usercases.FireStoreCloudUserCases
+import com.francisco.domain.usercases.AuthenticationUserCases
+import com.francisco.domain.usercases.FireStoreDatabaseUserCases
 import com.francisco.whatsapptest.presentation.CodeVerificationViewModel
 import dagger.Module
 import dagger.Provides
@@ -13,9 +13,9 @@ class CodeVerificationModule {
     @Provides
     fun provideCodeVerificationViewModel(
         authenticationUserCases: AuthenticationUserCases,
-        fireStoreCloudUserCases: FireStoreCloudUserCases
+        fireStoreDatabaseUserCases: FireStoreDatabaseUserCases
     ) =
-        CodeVerificationViewModel(authenticationUserCases, fireStoreCloudUserCases)
+        CodeVerificationViewModel(authenticationUserCases, fireStoreDatabaseUserCases)
 }
 
 @Subcomponent(modules = [CodeVerificationModule::class])

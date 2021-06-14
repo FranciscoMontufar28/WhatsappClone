@@ -3,6 +3,6 @@ package com.francisco.domain
 import java.lang.Exception
 
 interface OnFireStoreCloudListener {
-    fun addOnSuccessListener()
+    fun addOnSuccessListener(state: OnFireStoreCloudResponse)
     fun addOnFailureListener(exception: Exception)
 }

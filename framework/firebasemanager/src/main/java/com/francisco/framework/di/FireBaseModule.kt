@@ -1,12 +1,16 @@
 package com.francisco.framework.di
 
 import com.francisco.data.FireBaseAuthenticationDataSource
-import com.francisco.data.FireStoreCloudDataSource
+import com.francisco.data.FireBaseStorageDataSource
+import com.francisco.data.FireStoreDatabaseDataSource
 import com.francisco.framework.providers.AuthProvider
 import com.francisco.framework.requestparameters.FireBaseAuthenticationParameters
 import com.francisco.framework.implementations.FireBaseAuthenticationDataSourceImpl
-import com.francisco.framework.implementations.FireStoreCloudDataSourceImpl
+import com.francisco.framework.implementations.FireBaseStorageDataSourceImpl
+import com.francisco.framework.implementations.FireStoreDatabaseDataSourceImpl
+import com.francisco.framework.providers.ImageProvider
 import com.francisco.framework.providers.UserProvider
+import com.francisco.framework.requestparameters.FirebaseStorageParameters
 import com.francisco.framework.requestparameters.FireStoreCloudParameters
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
@@ -81,6 +85,17 @@ class FireBaseModule {
         )
 
     @Provides
-    fun provideFireStoreCloudDataSource(userProvider: UserProvider): FireStoreCloudDataSource =
-        FireStoreCloudDataSourceImpl(userProvider)
+    fun provideFireStoreDatabaseDataSource(userProvider: UserProvider): FireStoreDatabaseDataSource =
+        FireStoreDatabaseDataSourceImpl(userProvider)
+
+    @Provides
+    fun provideFFibaseStorageParameters() = FirebaseStorageParameters()
+
+    @Provides
+    fun provideImageProvider(firebaseStorageParameters: FirebaseStorageParameters) =
+        ImageProvider(firebaseStorageParameters)
+
+    @Provides
+    fun provideFireBaseStorageDataSource(imageProvider: ImageProvider): FireBaseStorageDataSource =
+        FireBaseStorageDataSourceImpl(imageProvider)
 }
