@@ -38,7 +38,7 @@ class CodeVerificationFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCodeVerificationBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -49,7 +49,7 @@ class CodeVerificationFragment : Fragment() {
             CodeVerificationFragmentArgs.fromBundle(it).phoneNumber
         }
         mExtraPhone?.let {
-            codeVerificationViewModel.authenticateUserByPhoneNumber(it, MainActivity.getInstance())
+            codeVerificationViewModel.authenticateUserByPhoneNumber(it, this.requireActivity())
         }
     }
 
@@ -82,8 +82,13 @@ class CodeVerificationFragment : Fragment() {
                 }
                 is CodeVerificationViewModel.CodeVerificationNavigation.ShowLoading -> showLoading()
                 is CodeVerificationViewModel.CodeVerificationNavigation.HideLoading -> hideLoader()
+                is CodeVerificationViewModel.CodeVerificationNavigation.Error -> showErrorMessage()
             }
         }
+    }
+
+    private fun showErrorMessage() {
+        showToast("We can't not connect with the service")
     }
 
     private fun onUserExist() {

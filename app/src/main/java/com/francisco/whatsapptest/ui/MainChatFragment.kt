@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.navigation.fragment.NavHostFragment
 import androidx.viewpager2.widget.ViewPager2
 import com.francisco.whatsapptest.R
@@ -74,23 +74,34 @@ class MainChatFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
             return@setOnMenuItemClickListener true
         }
         setUpTabLayout()
+        setUpIconWidthTab()
+    }
+
+    private fun setUpIconWidthTab() {
+        val linearLayout = (tabLayout.getChildAt(0) as LinearLayout).getChildAt(0)
+        val layoutParams = linearLayout.layoutParams as LinearLayout.LayoutParams
+        0.5F.also { layoutParams.weight = it }
+        linearLayout.layoutParams = layoutParams
     }
 
     private fun setUpTabLayout() {
         viewPagerAdapter.setFragments(
             arrayListOf(
+                PhotoFragment(),
                 ChatListFragment(),
                 StatusListFragment(),
                 CallListFragment()
             )
         )
         viewPager.adapter = viewPagerAdapter
+        viewPager.currentItem = 1
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = when (position) {
-                0 -> "Chats"
-                1 -> "Status"
-                2 -> "Calls"
-                else -> ""
+            when (position) {
+                0 -> tab.setIcon(R.drawable.ic_camera)
+                1 -> tab.text = "Chats"
+                2 -> tab.text = "Status"
+                3 -> tab.text = "Calls"
+                else -> tab.text = ""
             }
         }.attach()
     }
@@ -109,7 +120,10 @@ class MainChatFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
     }
 
     private fun openSetting() {
-
+        val navHostFragment =
+            requireActivity().supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        navController.navigate(R.id.action_mainChatFragment_to_userProfileFragment)
     }
 
     private fun createGroup() {

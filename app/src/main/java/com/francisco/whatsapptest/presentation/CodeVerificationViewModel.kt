@@ -17,7 +17,7 @@ class CodeVerificationViewModel @Inject constructor(
     val fireStoreDatabaseUserCases: FireStoreDatabaseUserCases
 ) :
     ViewModel() {
-    lateinit var mVerificationId: String
+    var mVerificationId: String? = null
 
     sealed class CodeVerificationNavigation {
         data class VerificationSuccess(val type: SuccessCode, val userId: String = "") :
@@ -26,6 +26,7 @@ class CodeVerificationViewModel @Inject constructor(
         data class VerificationError(val error: String) : CodeVerificationNavigation()
         object HideLoading : CodeVerificationNavigation()
         object ShowLoading : CodeVerificationNavigation()
+        object Error: CodeVerificationNavigation()
     }
 
     private val _event: MutableLiveData<Event<CodeVerificationNavigation>> =
@@ -57,31 +58,35 @@ class CodeVerificationViewModel @Inject constructor(
     }
 
     fun signInWithVerificationCode(code: String) {
-        _event.value = Event(CodeVerificationNavigation.ShowLoading)
-        authenticationUserCases.signInWithPhoneNumber.invoke(
-            code,
-            mVerificationId,
-            object : OnCompleteFireBaseListener {
-                override fun onSuccessCompleteListener(userId: String) {
-                    _event.value =
-                        Event(
-                            CodeVerificationNavigation.VerificationSuccess(
-                                SuccessCode.AUTHENTICATEUSER,
-                                userId
+        if (mVerificationId.isNullOrEmpty()) {
+            _event.value = Event(CodeVerificationNavigation.Error)
+        } else {
+            _event.value = Event(CodeVerificationNavigation.ShowLoading)
+            authenticationUserCases.signInWithPhoneNumber.invoke(
+                code,
+                mVerificationId!!,
+                object : OnCompleteFireBaseListener {
+                    override fun onSuccessCompleteListener(userId: String) {
+                        _event.value =
+                            Event(
+                                CodeVerificationNavigation.VerificationSuccess(
+                                    SuccessCode.AUTHENTICATEUSER,
+                                    userId
+                                )
                             )
-                        )
-                }
+                    }
 
-                override fun onFailCompleteListener() {
-                    _event.value =
-                        Event(CodeVerificationNavigation.VerificationError("The code doesn't match"))
-                }
+                    override fun onFailCompleteListener() {
+                        _event.value =
+                            Event(CodeVerificationNavigation.VerificationError("The code doesn't match"))
+                    }
 
-                override fun onSuccessCompleteNullUserListener() {
-                    _event.value =
-                        Event(CodeVerificationNavigation.VerificationError("There is an error getting the information"))
-                }
-            })
+                    override fun onSuccessCompleteNullUserListener() {
+                        _event.value =
+                            Event(CodeVerificationNavigation.VerificationError("There is an error getting the information"))
+                    }
+                })
+        }
     }
 
     fun saveAuthCurrentUser(phoneNumber: String) {
@@ -105,23 +110,29 @@ class CodeVerificationViewModel @Inject constructor(
     }
 
     fun validateIfUserExist(id: String) {
-        fireStoreDatabaseUserCases.validateIfUserExist.invoke(id, object : OnFireStoreCloudListener {
-            override fun addOnSuccessListener(state: OnFireStoreCloudResponse) {
-                if (state == OnFireStoreCloudResponse.NEW_USER) {
-                    _event.value =
-                        Event(CodeVerificationNavigation.VerificationSuccess(SuccessCode.NEWUSER))
-                } else {
-                    _event.value =
-                        Event(CodeVerificationNavigation.VerificationSuccess(SuccessCode.USEREXIST))
+        fireStoreDatabaseUserCases.validateIfUserExist.invoke(
+            id,
+            object : OnFireStoreCloudListener {
+                override fun addOnSuccessListener(state: OnFireStoreCloudResponse) {
+                    if (state == OnFireStoreCloudResponse.NEW_USER) {
+                        _event.value =
+                            Event(CodeVerificationNavigation.VerificationSuccess(SuccessCode.NEWUSER))
+                    } else {
+                        _event.value =
+                            Event(CodeVerificationNavigation.VerificationSuccess(SuccessCode.USEREXIST))
+                    }
                 }
-            }
 
-            override fun addOnFailureListener(exception: Exception) {
-                _event.value =
-                    Event(CodeVerificationNavigation.VerificationError(exception.message?: "Generic error"))
-            }
+                override fun addOnFailureListener(exception: Exception) {
+                    _event.value =
+                        Event(
+                            CodeVerificationNavigation.VerificationError(
+                                exception.message ?: "Generic error"
+                            )
+                        )
+                }
 
-        })
+            })
     }
 
     private fun getAuthCurrentUser(): String? {

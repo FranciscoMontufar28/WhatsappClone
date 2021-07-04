@@ -55,5 +55,18 @@
             app:destination="@id/onBoardingFragment"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mainChatFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.francisco.whatsapptest.ui.UserProfileFragment"
+        android:label="fragment_user_profile"
+        tools:layout="@layout/fragment_user_profile" >
+        <action
+            android:id="@+id/action_userProfileFragment_to_mainChatFragment"
+            app:destination="@id/mainChatFragment"
+            app:popUpTo="@id/navigation" />
     </fragment>
 </navigation>
