@@ -36,4 +36,8 @@ abstract class StorageRequest(var firebaseStorageParameters: FirebaseStoragePara
     fun getImageUri(): Task<Uri> {
         return reference.downloadUrl
     }
+
+    fun deleteImage(url: String): Task<Void> {
+       return firebaseStorageParameters.firebaseStorage.getReferenceFromUrl(url).delete()
+    }
 }

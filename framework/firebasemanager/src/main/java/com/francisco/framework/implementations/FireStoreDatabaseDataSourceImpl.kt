@@ -62,7 +62,8 @@ class FireStoreDatabaseDataSourceImpl @Inject constructor(var userProvider: User
                     id = it.id,
                     nickname = it.getString("nickname"),
                     image = it.getString("image"),
-                    phone = it.getString("phone")
+                    phone = it.getString("phone"),
+                    about = it.getString("about")
                 )
                 onGetUserInformationResponse.addOnSuccessListener(userEntity.toUserDomain())
             }
