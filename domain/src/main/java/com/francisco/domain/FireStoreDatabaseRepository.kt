@@ -5,4 +5,5 @@ interface FireStoreDatabaseRepository {
     fun updateAuthUser(user: UserDomain, onFireStoreCloudListener: OnFireStoreCloudListener)
     fun validateIfUserExist(userId: String, onFireStoreCloudListener: OnFireStoreCloudListener)
     fun getUserInformation(userId: String, onGetUserInformationResponse: OnGetUserInformationResponse)
+    fun deleteImage(id: String, onFireStoreCloudListener: OnFireStoreCloudListener)
 }

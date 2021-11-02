@@ -34,6 +34,10 @@ class FireStoreDatabaseDatabaseRepositoryImpl @Inject constructor(var fireStoreD
         userId: String,
         onGetUserInformationResponse: OnGetUserInformationResponse
     ) {
-        return fireStoreDatabaseDataSource.getUserInformation(userId, onGetUserInformationResponse)
+        fireStoreDatabaseDataSource.getUserInformation(userId, onGetUserInformationResponse)
+    }
+
+    override fun deleteImage(id: String, onFireStoreCloudListener: OnFireStoreCloudListener){
+        fireStoreDatabaseDataSource.deleteImage(id, onFireStoreCloudListener)
     }
 }

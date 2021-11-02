@@ -42,6 +42,9 @@ class DomainModule {
             ),
             GetUserInformation(
                 fireStoreDatabaseRepository
+            ),
+            DeleteProfileImage(
+                fireStoreDatabaseRepository
             )
         )
 
@@ -52,6 +55,9 @@ class DomainModule {
                 fireBaseStorageRepository
             ),
             GetImageUrl(
+                fireBaseStorageRepository
+            ),
+            DeleteImageUrlFromStorage(
                 fireBaseStorageRepository
             )
         )

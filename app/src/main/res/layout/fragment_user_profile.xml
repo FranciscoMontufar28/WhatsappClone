@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageView"
+        android:id="@+id/user_profile_image"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginTop="16dp"
@@ -34,7 +34,7 @@
         android:backgroundTint="@color/primaryLight"
         android:clickable="true"
         android:src="@drawable/ic_camera"
-        app:layout_constraintBottom_toBottomOf="@+id/circleImageView"
+        app:layout_constraintBottom_toBottomOf="@+id/user_profile_image"
         app:layout_constraintStart_toStartOf="@+id/guideline2" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -62,7 +62,7 @@
         android:layout_marginTop="16dp"
         android:text="Nombre"
         app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/user_profile_image" />
 
     <TextView
         android:id="@+id/user_profile_name"
@@ -177,7 +177,7 @@
         android:layout_marginEnd="24dp"
         android:src="@drawable/ic_edit_green"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/user_profile_image" />
 
     <ImageView
         android:id="@+id/user_profile_about_edit"

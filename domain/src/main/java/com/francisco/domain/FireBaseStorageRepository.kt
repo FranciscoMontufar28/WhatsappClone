@@ -9,6 +9,6 @@ interface FireBaseStorageRepository {
         context: Context, file: File,
         onFireBaseStorageListener: OnFireBaseStorageListener
     )
-
     fun getImageUri(onFireBaseStorageListener: OnFireBaseStorageListener)
+    fun deleteImageByUrl(url: String, onFireBaseStorageListener: OnFireBaseStorageListener)
 }

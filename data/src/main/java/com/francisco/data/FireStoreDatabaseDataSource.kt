@@ -12,4 +12,5 @@ interface FireStoreDatabaseDataSource {
         userId: String,
         onGetUserInformationResponse: OnGetUserInformationResponse
     )
+    fun deleteImage(id: String, onFireStoreCloudListener: OnFireStoreCloudListener)
 }

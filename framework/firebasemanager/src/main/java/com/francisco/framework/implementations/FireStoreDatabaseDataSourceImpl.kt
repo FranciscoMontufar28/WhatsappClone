@@ -69,4 +69,12 @@ class FireStoreDatabaseDataSourceImpl @Inject constructor(var userProvider: User
             }
             .addOnFailureListener { onGetUserInformationResponse.addOnFailureListener(it) }
     }
+
+    override fun deleteImage(id: String, onFireStoreCloudListener: OnFireStoreCloudListener) {
+        userProvider.deleteImage(id).addOnSuccessListener {
+            onFireStoreCloudListener.addOnSuccessListener(OnFireStoreCloudResponse.IMAGE_DELETED)
+        }.addOnFailureListener {
+            onFireStoreCloudListener.addOnFailureListener(it)
+        }
+    }
 }

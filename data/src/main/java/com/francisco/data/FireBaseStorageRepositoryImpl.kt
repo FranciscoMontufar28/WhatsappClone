@@ -20,4 +20,8 @@ class FireBaseStorageRepositoryImpl @Inject constructor(val fireBaseStorageDataS
         fireBaseStorageDataSource.getImageUri(onFireBaseStorageListener)
     }
 
+    override fun deleteImageByUrl(url: String, onFireBaseStorageListener: OnFireBaseStorageListener){
+        fireBaseStorageDataSource.deleteImageByUrl(url, onFireBaseStorageListener)
+    }
+
 }
